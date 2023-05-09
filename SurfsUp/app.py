@@ -33,6 +33,8 @@ app = Flask(__name__)
 # Flask Routes
 #################################################
 
+
+###home page below###
 @app.route ("/")
 def welcome():
     return (
@@ -45,23 +47,25 @@ def welcome():
         f"/api/v1.0/insert(yyyy-mm-dd)<start>/(yyyy-mm-dd)<end>"
     )
 
-@app.route ("/api/v1.0/percipitation")
-def percipitation():
+###precipitation###
+@app.route ("/api/v1.0/precipitation")
+def precipitation():
     session = Session(engine)
-    results_perc = session.query(measurement.date,measurement.prcp).\
+    results_prec = session.query(measurement.date,measurement.prcp).\
                         filter(measurement.date >= '2016-08-23').\
                         order_by(measurement.date).all()
     session.close()
 
-    all_perc = []
-    for date, prcp in results_percipitation:
-        percip_dict = {}
-        percip_dict["date"] = date
-        percip_dict["prcp"] = prcp
-        all_perc.append(precip_dict)
+    all_prec = []
+    for date, prcp in results_precipitation:
+        precip_dict = {}
+        precip_dict["date"] = date
+        precip_dict["prcp"] = prcp
+        all_prec.append(precip_dict)
 
     return jsonify(all_perc)
 
+###stations###
 @app.route ("/api/v1.0/stations")
 def stations():
     session = Session(engine)
@@ -74,3 +78,23 @@ def stations():
 
     return jsonify(all_station)
 
+###temperature###
+@app.route ("/api/v1.0/tobs")
+def monthly_temp():
+    session = Session(engine)
+    
+    temp_results = session.query(measurement.tobs).\
+                    filter(measurement.date >= '2016-08-23').\
+                    filter(measurement.station == 'USC00519281').all()
+
+    session.close()
+
+    all_temps = list(np.ravel(temp_results))
+
+    return jsonify(all_temps)
+
+###start###
+
+
+
+###start/stop###
