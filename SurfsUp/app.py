@@ -95,7 +95,7 @@ def monthly_temp():
 
 ###start###
 @app.route ("/api/v1.0/insert(<start>)")
-def temp_range_start():
+def temp_range_start(start):
     session = Session(engine)
     temp_range = session.query(func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).\
         filter(measurement.date >= start).all()
@@ -112,7 +112,7 @@ def temp_range_start():
     return jsonify(temp_range_list)
 ###start/stop###
 @app.route ("/api/v1.0/insert(<start>)/(<stop>)")
-def temp_range_start_stop():
+def temp_range_start_stop(start=None, stop=None):
     session = Session(engine)
     temp_range = session.query(func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).\
         filter(measurement.date >= start).filter(measurement.date <= stop).all()
