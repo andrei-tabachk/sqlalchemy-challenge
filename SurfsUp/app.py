@@ -57,13 +57,13 @@ def precipitation():
     session.close()
 
     all_prec = []
-    for date, prcp in results_precipitation:
+    for date, prcp in results_prec:
         precip_dict = {}
         precip_dict["date"] = date
         precip_dict["prcp"] = prcp
         all_prec.append(precip_dict)
 
-    return jsonify(all_perc)
+    return jsonify(all_prec)
 
 ###stations###
 @app.route ("/api/v1.0/stations")
